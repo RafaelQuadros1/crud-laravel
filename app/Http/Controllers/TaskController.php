@@ -17,7 +17,7 @@ class TaskController extends Controller
     {
         return view('tasks.create');
     }
-    
+
     public function store(Request $request)
     {
         // Validação dos dados
@@ -27,7 +27,7 @@ class TaskController extends Controller
             'status' => 'nullable|boolean'
         ]);
 
-        
+
         Task::create($request->all());
 
         return redirect()->route('tasks.index')->with('success', 'Tarefa criada com sucesso!');
@@ -40,9 +40,17 @@ class TaskController extends Controller
 
     public function update(Request $request, Task $task)
     {
-        $task->update($request->all());
-        return redirect()->route('tasks.index');
+        $validatedData = $request->validate([
+            'task' => 'nullable|string|max:255',
+            'description' => 'nullable|string',
+            'status' => 'required|boolean',
+        ]);
+
+        $task->update($validatedData);
+
+        return redirect()->route('tasks.index')->with('success', 'Task updated successfully.');
     }
+
     public function destroy(Task $task)
     {
         $task->delete();
