@@ -20,7 +20,13 @@
             <div class="card-body border border-1 rounded-3 mb-3 p-4" style="background-color: #fff; border-radius: 10px;">
                 <h2>{{ $task->task }}</h2>
                 <p>{{ $task->description }}</p>
-                <p>Status: {{ $task->status }}</p>
+                <p>
+                    @if ($task->status == 0)
+                    <span class="badge bg-warning">Pending</span>
+                    @else
+                    <span class="badge bg-success">Completed</span>
+                    @endif
+                </p>
                 <div class="flex justify-content-between">
                     <a href="{{ route('tasks.edit', $task->id) }}" class=" w-1 h-1">
                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -33,7 +39,6 @@
                         </svg>
                     </a>
                     <form action="{{ route('tasks.destroy', $task->id) }}" method="POST" style="display:inline; margin-left: 10px; background-color: transparent;">
-
                         @csrf
                         @method('DELETE')
                         <button type="submit" style="background-color: transparent; border: none; cursor: pointer;">
@@ -54,4 +59,5 @@
 
             @endforeach
         </div>
+    </div>
 </x-layouts.app>
